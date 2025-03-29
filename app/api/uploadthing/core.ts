@@ -14,7 +14,7 @@ export const ourFileRouter = {
       return { userId: session.user.email };
     })
     .onUploadComplete(async ({ file }) => {
-      return { fileUrl: file.url };
+      return { fileUrl: file.ufsUrl };
     }),
 } satisfies FileRouter;
 

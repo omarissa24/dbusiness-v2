@@ -26,6 +26,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
+import { ImageUpload } from "@/components/image-upload";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -239,11 +240,11 @@ export function BusinessCardForm({
         <FormField
           control={form.control}
           name='imageUrl'
-          render={({}) => (
+          render={({ field }) => (
             <FormItem>
               <FormLabel>Profile Image</FormLabel>
               <FormControl>
-                {/* <ImageUpload value={field.value} onChange={field.onChange} /> */}
+                <ImageUpload value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>
