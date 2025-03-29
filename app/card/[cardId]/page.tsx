@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { QRCode } from "@/components/qr-code";
 import {
   Mail,
   Phone,
@@ -13,7 +14,16 @@ import {
   Building2,
   Briefcase,
   UserPlus,
+  QrCode,
+  MoreHorizontal,
+  X,
 } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface BusinessCard {
   id: string;
@@ -35,6 +45,7 @@ export default function BusinessCardPage() {
   const params = useParams();
   const [card, setCard] = useState<BusinessCard | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showQRCode, setShowQRCode] = useState(false);
 
   useEffect(() => {
     const fetchCard = async () => {
@@ -132,24 +143,49 @@ export default function BusinessCardPage() {
                   </div>
                 )}
               </div>
-              <Button
-                variant='outline'
-                className='gap-2'
-                onClick={() => {
-                  const link = document.createElement("a");
-                  link.href = getVCardUrl();
-                  link.download = `${card.name
-                    .toLowerCase()
-                    .replace(/\s+/g, "-")}.vcf`;
-                  document.body.appendChild(link);
-                  link.click();
-                  document.body.removeChild(link);
-                }}
-              >
-                <UserPlus className='h-4 w-4' />
-                Add to Contacts
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant='outline' size='icon'>
+                    <MoreHorizontal className='h-4 w-4' />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align='end'>
+                  <DropdownMenuItem onClick={() => setShowQRCode(true)}>
+                    <QrCode className='h-4 w-4 mr-2' />
+                    Show QR Code
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      const link = document.createElement("a");
+                      link.href = getVCardUrl();
+                      link.download = `${card.name
+                        .toLowerCase()
+                        .replace(/\s+/g, "-")}.vcf`;
+                      document.body.appendChild(link);
+                      link.click();
+                      document.body.removeChild(link);
+                    }}
+                  >
+                    <UserPlus className='h-4 w-4 mr-2' />
+                    Add to Contacts
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
+
+            {showQRCode && (
+              <div className='mb-6 relative'>
+                <Button
+                  variant='ghost'
+                  size='icon'
+                  className='absolute right-0 -top-10 z-10'
+                  onClick={() => setShowQRCode(false)}
+                >
+                  <X className='h-4 w-4' />
+                </Button>
+                <QRCode url={`${window.location.origin}/card/${card.id}`} />
+              </div>
+            )}
 
             {card.bio && (
               <div className='prose prose-sm max-w-none mb-6'>
