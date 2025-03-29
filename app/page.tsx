@@ -2,7 +2,7 @@ import { CircleUser, Sparkles, Share2, QrCode } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-
+import { ModeToggle } from "@/components/ModeToggle";
 export default function Home() {
   return (
     <div className='min-h-screen bg-gradient-to-b from-background to-secondary'>
@@ -12,13 +12,14 @@ export default function Home() {
             <CircleUser className='h-8 w-8 text-primary' />
             <span className='text-xl font-bold'>Digital Cards</span>
           </div>
-          <div className='space-x-4'>
+          <div className='space-x-4 flex items-center'>
             <Button variant='ghost' asChild>
               <Link href='/login'>Login</Link>
             </Button>
             <Button asChild>
               <Link href='/register'>Get Started</Link>
             </Button>
+            <ModeToggle />
           </div>
         </nav>
       </header>
