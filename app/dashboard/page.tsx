@@ -2,7 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
+import { ModeToggle } from "@/components/ModeToggle";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Card,
   CardContent,
@@ -10,7 +18,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Plus, Pencil, Trash2, Eye } from "lucide-react";
+import { Plus, Pencil, Trash2, Eye, LogOut, MoreVertical } from "lucide-react";
 
 interface BusinessCard {
   id: string;
@@ -82,13 +90,29 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className='container mx-auto py-8'>
+    <div className='container mx-auto py-8 px-4'>
       <div className='flex justify-between items-center mb-8'>
-        <h1 className='text-3xl font-bold'>My Business Cards</h1>
-        <Button onClick={handleCreateCard}>
-          <Plus className='mr-2 h-4 w-4' />
-          Create New Card
-        </Button>
+        <h1 className='text-3xl font-bold'>My Cards</h1>
+        <div className='flex items-center gap-4'>
+          <ModeToggle />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant='outline' size='icon'>
+                <MoreVertical className='h-4 w-4' />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align='end'>
+              <DropdownMenuItem onClick={handleCreateCard}>
+                <Plus className='h-4 w-4 mr-2' />
+                Create New Card
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/" })}>
+                <LogOut className='h-4 w-4 mr-2' />
+                Sign Out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
 
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
