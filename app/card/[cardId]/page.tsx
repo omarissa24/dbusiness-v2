@@ -17,6 +17,7 @@ import {
   QrCode,
   MoreHorizontal,
   X,
+  Lock,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -46,16 +47,31 @@ export default function BusinessCardPage() {
   const [card, setCard] = useState<BusinessCard | null>(null);
   const [loading, setLoading] = useState(true);
   const [showQRCode, setShowQRCode] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchCard = async () => {
       try {
         const response = await fetch(`/api/business-cards/${params.cardId}`);
-        if (!response.ok) throw new Error("Failed to fetch business card");
+        if (!response.ok) {
+          if (response.status === 404) {
+            setError("Business card not found");
+          } else if (response.status === 403) {
+            setError("This business card is private");
+          } else {
+            setError("Failed to fetch business card");
+          }
+          return;
+        }
         const data = await response.json();
+        if (!data.isPublic) {
+          setError("This business card is private");
+          return;
+        }
         setCard(data);
       } catch (error) {
         console.error("Error fetching business card:", error);
+        setError("Failed to fetch business card");
       } finally {
         setLoading(false);
       }
@@ -91,6 +107,21 @@ export default function BusinessCardPage() {
     return (
       <div className='min-h-screen flex items-center justify-center'>
         <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-primary'></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className='min-h-screen flex items-center justify-center'>
+        <div className='text-center'>
+          <h1 className='text-2xl font-bold mb-2'>Access Denied</h1>
+          <p className='text-muted-foreground mb-4'>{error}</p>
+          <div className='flex items-center justify-center gap-2 text-muted-foreground'>
+            <Lock className='h-4 w-4' />
+            <span>This card requires authentication to view</span>
+          </div>
+        </div>
       </div>
     );
   }

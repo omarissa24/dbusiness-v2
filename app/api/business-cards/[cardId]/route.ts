@@ -9,34 +9,30 @@ export async function GET(
 ) {
   try {
     const session = await getServerSession(authOptions);
-
-    if (!session?.user?.email) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
-
-    const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
-    });
-
-    if (!user) {
-      return new NextResponse("User not found", { status: 404 });
-    }
-
-    const businessCard = await prisma.businessCard.findUnique({
+    const card = await prisma.businessCard.findUnique({
       where: {
         id: params.cardId,
-        userId: user.id,
       },
     });
 
-    if (!businessCard) {
-      return new NextResponse("Business card not found", { status: 404 });
+    if (!card) {
+      return new NextResponse("Not Found", { status: 404 });
     }
 
-    return NextResponse.json(businessCard);
+    // If the card is public, anyone can view it
+    if (card.isPublic) {
+      return NextResponse.json(card);
+    }
+
+    // If the card is private, only the owner can view it
+    if (!session?.user?.email || card.userId !== session.user.email) {
+      return new NextResponse("Forbidden", { status: 403 });
+    }
+
+    return NextResponse.json(card);
   } catch (error) {
     console.error("[BUSINESS_CARD_GET]", error);
-    return new NextResponse("Internal error", { status: 500 });
+    return new NextResponse("Internal Error", { status: 500 });
   }
 }
 
