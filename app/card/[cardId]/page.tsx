@@ -18,6 +18,7 @@ import {
   MoreHorizontal,
   X,
   Lock,
+  Share2,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -25,6 +26,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
+import copy from "copy-to-clipboard";
 
 interface BusinessCard {
   id: string;
@@ -195,6 +198,21 @@ export default function BusinessCardPage() {
                   >
                     <UserPlus className='h-4 w-4 mr-2' />
                     Add to Contacts
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      const success = copy(
+                        `${window.location.origin}/card/${card.id}`
+                      );
+                      if (success) {
+                        toast.success("Card copied to clipboard");
+                      } else {
+                        toast.error("Failed to copy URL");
+                      }
+                    }}
+                  >
+                    <Share2 className='h-4 w-4 mr-2' />
+                    Share Card
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
