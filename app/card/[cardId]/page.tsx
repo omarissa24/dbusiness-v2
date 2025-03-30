@@ -64,10 +64,6 @@ export default function BusinessCardPage() {
           return;
         }
         const data = await response.json();
-        if (!data.isPublic) {
-          setError("This business card is private");
-          return;
-        }
         setCard(data);
       } catch (error) {
         console.error("Error fetching business card:", error);

@@ -25,7 +25,7 @@ export async function GET(
     }
 
     // If the card is private, only the owner can view it
-    if (!session?.user?.email || card.userId !== session.user.email) {
+    if (card.userId !== session?.user?.id) {
       return new NextResponse("Forbidden", { status: 403 });
     }
 
