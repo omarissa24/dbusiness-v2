@@ -1,17 +1,17 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { prisma } from "@/lib/prisma";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 
-export async function GET(
-  req: Request,
-  { params }: { params: { cardId: string } }
-) {
+type Params = Promise<{ cardId: string }>;
+
+export async function GET(req: Request, { params }: { params: Params }) {
   try {
     const session = await getServerSession(authOptions);
+    const { cardId } = await params;
     const card = await prisma.businessCard.findUnique({
       where: {
-        id: params.cardId,
+        id: cardId,
       },
     });
 
@@ -36,12 +36,10 @@ export async function GET(
   }
 }
 
-export async function PUT(
-  req: Request,
-  { params }: { params: { cardId: string } }
-) {
+export async function PUT(req: Request, { params }: { params: Params }) {
   try {
     const session = await getServerSession(authOptions);
+    const { cardId } = await params;
 
     if (!session?.user?.email) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -73,7 +71,7 @@ export async function PUT(
 
     const businessCard = await prisma.businessCard.update({
       where: {
-        id: params.cardId,
+        id: cardId,
         userId: user.id,
       },
       data: {
@@ -99,13 +97,10 @@ export async function PUT(
   }
 }
 
-export async function DELETE(
-  req: Request,
-  { params }: { params: { cardId: string } }
-) {
+export async function DELETE(req: Request, { params }: { params: Params }) {
   try {
     const session = await getServerSession(authOptions);
-
+    const { cardId } = await params;
     if (!session?.user?.email) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
@@ -120,7 +115,7 @@ export async function DELETE(
 
     await prisma.businessCard.delete({
       where: {
-        id: params.cardId,
+        id: cardId,
         userId: user.id,
       },
     });
