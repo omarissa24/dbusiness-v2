@@ -1,27 +1,23 @@
-import { Oval } from "react-loader-spinner";
+import { ClipLoader } from "react-spinners";
 
 interface LoadingSpinnerProps {
   size?: number;
   color?: string;
-  secondaryColor?: string;
   className?: string;
 }
 
 export function LoadingSpinner({
   size = 40,
   color = "hsl(var(--primary))",
-  secondaryColor = "hsl(var(--primary))",
   className = "",
 }: LoadingSpinnerProps) {
   return (
     <div className={`flex items-center justify-center ${className}`}>
-      <Oval
-        height={size}
-        width={size}
+      <ClipLoader
+        size={size}
         color={color}
-        secondaryColor={secondaryColor}
-        strokeWidth={2}
-        strokeWidthSecondary={2}
+        loading={true}
+        aria-label='Loading Spinner'
       />
     </div>
   );
