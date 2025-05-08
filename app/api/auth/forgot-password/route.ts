@@ -40,17 +40,21 @@ export async function POST(req: Request) {
 
     // Send the reset email
     const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL}/reset-password?token=${token}`;
-    await sendEmail({
-      to: email,
-      subject: "Reset your password",
-      html: `
+    await new Promise((resolve, reject) =>
+      sendEmail({
+        to: email,
+        subject: "Reset your password",
+        html: `
         <p>You requested a password reset.</p>
         <p>Click the link below to reset your password:</p>
         <a href="${resetUrl}">Reset Password</a>
         <p>This link will expire in 1 hour.</p>
         <p>If you didn't request this, you can safely ignore this email.</p>
       `,
-    });
+      })
+        .then(resolve)
+        .catch(reject)
+    );
 
     return new NextResponse(
       "If an account exists, you will receive a password reset link",
