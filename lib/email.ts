@@ -1,5 +1,4 @@
 import nodemailer from "nodemailer";
-import type { SentMessageInfo } from "nodemailer";
 
 interface EmailOptions {
   to: string;
@@ -7,11 +6,7 @@ interface EmailOptions {
   html: string;
 }
 
-export async function sendEmail({
-  to,
-  subject,
-  html,
-}: EmailOptions): Promise<SentMessageInfo> {
+export async function sendEmail({ to, subject, html }: EmailOptions) {
   try {
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
@@ -23,12 +18,22 @@ export async function sendEmail({
       },
     });
 
-    // Explicitly return the Promise from sendMail
-    return await transporter.sendMail({
-      from: process.env.SMTP_FROM,
-      to,
-      subject,
-      html,
+    await new Promise((resolve, reject) => {
+      transporter.sendMail(
+        {
+          from: process.env.SMTP_FROM,
+          to,
+          subject,
+          html,
+        },
+        (error, info) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(info);
+          }
+        }
+      );
     });
   } catch (error) {
     console.error("Failed to send email:", error);
