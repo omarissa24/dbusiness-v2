@@ -153,6 +153,15 @@ export default function LoginPage() {
             </motion.div>
           </div>
 
+          <div className='flex items-center justify-end'>
+            <Link
+              href='/forgot-password'
+              className='text-sm text-indigo-600 hover:text-indigo-500'
+            >
+              Forgot your password?
+            </Link>
+          </div>
+
           {error && (
             <motion.div
               initial={{ opacity: 0, y: -10 }}
