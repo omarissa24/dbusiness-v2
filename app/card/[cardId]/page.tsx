@@ -244,7 +244,10 @@ export default function BusinessCardPage() {
               {card.email && (
                 <Button
                   variant='outline'
-                  className='w-full justify-start gap-2'
+                  className='w-full justify-start gap-2 transition-transform active:scale-95'
+                  onClick={() =>
+                    (window.location.href = `mailto:${card.email}`)
+                  }
                 >
                   <Mail className='h-4 w-4' />
                   {card.email}
@@ -253,7 +256,8 @@ export default function BusinessCardPage() {
               {card.phone && (
                 <Button
                   variant='outline'
-                  className='w-full justify-start gap-2'
+                  className='w-full justify-start gap-2 transition-transform active:scale-95'
+                  onClick={() => (window.location.href = `tel:${card.phone}`)}
                 >
                   <Phone className='h-4 w-4' />
                   {card.phone}
@@ -262,7 +266,10 @@ export default function BusinessCardPage() {
               {card.website && (
                 <Button
                   variant='outline'
-                  className='w-full justify-start gap-2'
+                  className='w-full justify-start gap-2 transition-transform active:scale-95'
+                  onClick={() =>
+                    card.website && window.open(card.website, "_blank")
+                  }
                 >
                   <Globe className='h-4 w-4' />
                   {card.website}
