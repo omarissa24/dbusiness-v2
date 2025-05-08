@@ -1,7 +1,15 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { randomBytes } from "crypto";
-import { sendEmail } from "@/lib/email";
+// import { sendEmail } from "@/lib/email";
+
+import nodemailer from "nodemailer";
+
+// interface EmailOptions {
+//   to: string;
+//   subject: string;
+//   html: string;
+// }
 
 export async function POST(req: Request) {
   try {
@@ -40,18 +48,30 @@ export async function POST(req: Request) {
 
     // Send the reset email
     const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL}/reset-password?token=${token}`;
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: Number(process.env.SMTP_PORT),
+      secure: process.env.SMTP_SECURE === "true",
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASSWORD,
+      },
+    });
+
     await new Promise((resolve, reject) =>
-      sendEmail({
-        to: email,
-        subject: "Reset your password",
-        html: `
+      transporter
+        .sendMail({
+          from: process.env.SMTP_FROM,
+          to: email,
+          subject: "Reset your password",
+          html: `
         <p>You requested a password reset.</p>
         <p>Click the link below to reset your password:</p>
         <a href="${resetUrl}">Reset Password</a>
         <p>This link will expire in 1 hour.</p>
         <p>If you didn't request this, you can safely ignore this email.</p>
       `,
-      })
+        })
         .then(resolve)
         .catch(reject)
     );
