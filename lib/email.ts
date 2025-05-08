@@ -18,23 +18,14 @@ export async function sendEmail({ to, subject, html }: EmailOptions) {
       },
     });
 
-    await new Promise((resolve, reject) => {
-      transporter.sendMail(
-        {
-          from: process.env.SMTP_FROM,
-          to,
-          subject,
-          html,
-        },
-        (error, info) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve(info);
-          }
-        }
-      );
+    const info = await transporter.sendMail({
+      from: process.env.SMTP_FROM,
+      to,
+      subject,
+      html,
     });
+
+    return info;
   } catch (error) {
     console.error("Failed to send email:", error);
     throw error; // Re-throw the error to be handled by the caller
