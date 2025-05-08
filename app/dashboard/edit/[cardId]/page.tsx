@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { BusinessCardForm } from "@/components/business-card-form";
 import { useParams } from "next/navigation";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
 interface BusinessCard {
   id: string;
@@ -47,7 +48,7 @@ export default function EditBusinessCardPage() {
       <div className='container mx-auto py-8'>
         <div className='max-w-2xl mx-auto'>
           <div className='flex items-center justify-center min-h-[400px]'>
-            Loading...
+            <LoadingSpinner size={50} />
           </div>
         </div>
       </div>

@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 import copy from "copy-to-clipboard";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
 interface BusinessCard {
   id: string;
@@ -105,7 +106,7 @@ export default function BusinessCardPage() {
   if (loading) {
     return (
       <div className='min-h-screen flex items-center justify-center'>
-        <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-primary'></div>
+        <LoadingSpinner size={50} />
       </div>
     );
   }

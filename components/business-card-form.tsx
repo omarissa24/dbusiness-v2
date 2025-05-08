@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { ImageUpload } from "@/components/image-upload";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -297,8 +298,17 @@ export function BusinessCardForm({
         />
 
         <div className='flex gap-4'>
-          <Button type='submit' disabled={loading}>
-            {loading ? "Saving..." : cardId ? "Update Card" : "Create Card"}
+          <Button type='submit' disabled={loading} className='w-full'>
+            {loading ? (
+              <div className='flex items-center gap-2'>
+                <LoadingSpinner size={20} />
+                <span>Saving...</span>
+              </div>
+            ) : cardId ? (
+              "Update Card"
+            ) : (
+              "Create Card"
+            )}
           </Button>
           <Button
             type='button'
