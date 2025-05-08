@@ -50,6 +50,9 @@ export async function POST(req: Request) {
         <p>This link will expire in 1 hour.</p>
         <p>If you didn't request this, you can safely ignore this email.</p>
       `,
+    }).catch((error) => {
+      console.error("[FORGOT_PASSWORD_ERROR]", error);
+      return new NextResponse("Internal error", { status: 500 });
     });
 
     return new NextResponse(
