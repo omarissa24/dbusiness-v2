@@ -18,13 +18,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { toast } from "sonner";
 import { ImageUpload } from "@/components/image-upload";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
@@ -247,30 +240,6 @@ export function BusinessCardForm({
               <FormControl>
                 <ImageUpload value={field.value} onChange={field.onChange} />
               </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name='theme'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Theme</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder='Select a theme' />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value='default'>Default</SelectItem>
-                  <SelectItem value='modern'>Modern</SelectItem>
-                  <SelectItem value='classic'>Classic</SelectItem>
-                  <SelectItem value='minimal'>Minimal</SelectItem>
-                </SelectContent>
-              </Select>
               <FormMessage />
             </FormItem>
           )}
