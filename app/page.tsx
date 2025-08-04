@@ -38,9 +38,9 @@ export default function Home() {
             <Button size='lg' asChild>
               <Link href='/register'>Create Your Card</Link>
             </Button>
-            <Button size='lg' variant='outline' asChild>
+            {/* <Button size='lg' variant='outline' asChild>
               <Link href='/examples'>View Examples</Link>
-            </Button>
+            </Button> */}
           </div>
         </div>
 

@@ -61,23 +61,24 @@ model VerificationToken {
 }
 
 model BusinessCard {
-  id          String   @id @default(cuid())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  userId      String
-  name        String
-  title       String?
-  company     String?
-  email       String?
-  phone       String?
-  website     String?
-  address     String?
-  bio         String?  @db.Text
-  socialLinks Json?
-  imageUrl    String?
-  qrCode      String?
-  theme       String   @default("default")
-  isPublic    Boolean  @default(false)
-  views       Int      @default(0)
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id             String   @id @default(cuid())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  userId         String
+  name           String
+  title          String?
+  company        String?
+  email          String?
+  phone          String?
+  secondaryPhone String?
+  website        String?
+  address        String?
+  bio            String?  @db.Text
+  socialLinks    Json?
+  imageUrl       String?
+  qrCode         String?
+  theme          String   @default("default")
+  isPublic       Boolean  @default(false)
+  views          Int      @default(0)
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

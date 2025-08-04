@@ -37,6 +37,7 @@ interface BusinessCard {
   company?: string;
   email?: string;
   phone?: string;
+  secondaryPhone?: string;
   website?: string;
   address?: string;
   bio?: string;
@@ -92,6 +93,7 @@ export default function BusinessCardPage() {
       card.company ? `ORG:${card.company}` : "",
       card.email ? `EMAIL:${card.email}` : "",
       card.phone ? `TEL:${card.phone}` : "",
+      card.secondaryPhone ? `TEL;TYPE=cell:${card.secondaryPhone}` : "",
       card.website ? `URL:${card.website}` : "",
       card.address ? `ADR:;;${card.address};;;` : "",
       "END:VCARD",
@@ -261,6 +263,18 @@ export default function BusinessCardPage() {
                 >
                   <Phone className='h-4 w-4' />
                   {card.phone}
+                </Button>
+              )}
+              {card.secondaryPhone && (
+                <Button
+                  variant='outline'
+                  className='w-full justify-start gap-2 transition-transform active:scale-95'
+                  onClick={() =>
+                    (window.location.href = `tel:${card.secondaryPhone}`)
+                  }
+                >
+                  <Phone className='h-4 w-4' />
+                  {card.secondaryPhone}
                 </Button>
               )}
               {card.website && (

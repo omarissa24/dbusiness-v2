@@ -28,6 +28,7 @@ const formSchema = z.object({
   company: z.string().optional(),
   email: z.string().email("Invalid email address").optional().or(z.literal("")),
   phone: z.string().optional(),
+  secondaryPhone: z.string().optional(),
   website: z.string().url("Invalid URL").optional().or(z.literal("")),
   address: z.string().optional(),
   bio: z.string().optional(),
@@ -59,6 +60,7 @@ export function BusinessCardForm({
       company: "",
       email: "",
       phone: "",
+      secondaryPhone: "",
       website: "",
       address: "",
       bio: "",
@@ -175,6 +177,24 @@ export function BusinessCardForm({
               <FormLabel>Phone</FormLabel>
               <FormControl>
                 <Input type='tel' placeholder='Your phone number' {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name='secondaryPhone'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Secondary Phone</FormLabel>
+              <FormControl>
+                <Input
+                  type='tel'
+                  placeholder='Your secondary phone number'
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
